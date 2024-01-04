@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pennywise.BlazorWA", "Pennywise.BlazorWA\Pennywise.BlazorWA.csproj", "{3382EE2A-F163-4D07-B56C-C7F05550B310}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3382EE2A-F163-4D07-B56C-C7F05550B310}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3382EE2A-F163-4D07-B56C-C7F05550B310}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3382EE2A-F163-4D07-B56C-C7F05550B310}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3382EE2A-F163-4D07-B56C-C7F05550B310}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {236F2985-627E-4615-B61B-BB0B9D11D38D}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,70 @@
+﻿@using Pennywise.Model
+@using System.Diagnostics
+@using System.Timers
+@implements IDisposable
+
+@if (Balloon is not null)
+{
+    <div @onclick="Pop"
+        style="position: absolute; top: @(Balloon.PositionTop)px; left: @(Balloon.PositionLeft)px;">
+        @if (Balloon.IsPopped)
+        {
+            if (Balloon.ImageFileName == $"balloon4.png")
+            {
+                <img src="images/pennywise.png" style="width: 150px;" />
+            }
+            else
+            {                
+                <img src="images/popped.png" style="width: 150px;"/>
+            }
+
+        }
+        else
+        {
+            <img src="images/@Balloon.ImageFileName" style="width: 150px;"/>
+        }
+    </div>
+}
+
+@code
+{
+    private Timer? PoppedTimer { get; set; }
+
+    [Parameter]
+    public Balloon? Balloon { get; set; }
+
+    [Parameter]
+    public EventCallback<Balloon?> OnBalloonPopped { get; set; }
+
+    private Task Pop()
+    {
+        if (Balloon is null)
+        {
+            return Task.CompletedTask;
+        }
+
+            //Change image
+        Balloon.IsPopped = true;
+
+        //Wait 300ms before returning the balloon
+        PoppedTimer = new Timer { Interval = 300 };
+        PoppedTimer.Elapsed += async (sender, args) =>
+        {
+            PoppedTimer.Stop();
+            await OnBalloonPopped.InvokeAsync(Balloon);
+        };
+
+        PoppedTimer.Start();
+
+        return Task.CompletedTask;
+    }
+
+    public void Dispose()
+    {
+        if (PoppedTimer is not null)
+        {
+            PoppedTimer.Stop();
+            PoppedTimer.Dispose();
+        }
+    }
+}

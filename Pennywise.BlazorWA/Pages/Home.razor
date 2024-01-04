@@ -1,0 +1,123 @@
+﻿@page "/"
+
+<style>
+    body {
+        background-image: url(../images/wallpaper.jpeg);
+
+        /* Full height */
+        height: 100%;
+        width: 100%;
+
+        /* Center and scale the image nicely */
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    h1, h2 { 
+        color: white;
+    }
+</style>
+
+@using System.Timers
+@using Pennywise.Model
+@implements IDisposable
+
+<PageTitle>Pennywise</PageTitle>
+<h1>Here's Pennywise! Let's pop a balloon!</h1>
+<div>
+    <h2>Balloons popped: @PoppedCount</h2>
+</div>
+
+@if (Balloons is not null)
+{
+    foreach (var balloon in Balloons)
+    {
+        <BalloonComponent Balloon="balloon"
+                          OnBalloonPopped="BalloonPopped">
+        </BalloonComponent>
+    }
+}
+
+@code
+{
+    private int PoppedCount { get; set; }
+    private Random? Random { get; set; }
+    private Timer? Timer { get; set; }
+    private IList<Balloon>? Balloons { get; set; }
+
+    protected override Task OnInitializedAsync()
+    {
+        Timer = new Timer { Interval = 2000 };
+        Random = new Random();
+        Balloons = new List<Balloon>();
+
+        Timer.Elapsed += TimerOnElapsed;
+        Timer.Start();
+
+        return base.OnInitializedAsync();
+    }
+
+    private void TimerOnElapsed(object? sender, ElapsedEventArgs e)
+    {
+        if (Balloons is null)
+        {
+            return;
+        }
+
+        if (Random is null)
+        {
+            return;
+        }
+
+        if (Balloons.Count >= 100)
+        {
+            return;
+        }
+
+        var positionLeft = Random.Next(800);
+        var positionTop = Random.Next(500);
+        var imageNumber = Random.Next(1, 5);
+
+        var balloon = new Balloon
+            {
+                PositionLeft = positionLeft,
+                PositionTop = positionTop,
+                ImageFileName = $"balloon{imageNumber}.png"
+            };
+
+        Balloons.Add(balloon);
+
+        if (Timer is not null)
+        {
+            var randomInterval = Random.Next(500, 2000);
+            Timer.Interval = randomInterval;
+        }
+
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        if (Timer is not null)
+        {
+            Timer.Stop();
+            Timer.Dispose();
+        }
+    }
+
+    private void BalloonPopped(Balloon? balloon)
+    {
+        if (balloon is null)
+        {
+            return;
+        }
+
+        if (Balloons is null)
+        {
+            return;
+        }
+
+        PoppedCount += 1;
+        Balloons.Remove(balloon);
+    }
+}
